@@ -36,12 +36,12 @@ Foam::rarefactionParameter::New
 {
     word mfpModelName = word("rarefied") +'<' + thermo.partialThermoName() + '>';
 
-    fvMeshConstructorTable::iterator cstrIter =
-        fvMeshConstructorTablePtr_->find(mfpModelName);
+    meshConstructorTable::iterator cstrIter =
+        meshConstructorTablePtr_->find(mfpModelName);
 
     Info<< "Loading the rarefaction parameters library\n" << endl;
 
-    if (cstrIter == fvMeshConstructorTablePtr_->end())
+    if (cstrIter == meshConstructorTablePtr_->end())
     {
         FatalErrorIn
         (
@@ -50,7 +50,7 @@ Foam::rarefactionParameter::New
         )   << "Unknown mfpModel type "
             << mfpModelName << endl << endl
             << "Valid  mfpModels are : " << endl
-            << fvMeshConstructorTablePtr_->toc()
+            << meshConstructorTablePtr_->toc()
             << exit(FatalError);
     }
 

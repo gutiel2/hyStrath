@@ -62,10 +62,10 @@ Foam::relaxationTimeModelVV::New
             << partialVVname << "\n" << endl;
     }
 
-    fvMeshConstructorTable::iterator cstrIter =
-        fvMeshConstructorTablePtr_->find(VVModelName);
+    meshConstructorTable::iterator cstrIter =
+        meshConstructorTablePtr_->find(VVModelName);
 
-    if (cstrIter == fvMeshConstructorTablePtr_->end())
+    if (cstrIter == meshConstructorTablePtr_->end())
     {
         FatalErrorIn
         (
@@ -74,7 +74,7 @@ Foam::relaxationTimeModelVV::New
         )   << "Unknown VVModel type "
             << VVModelName << endl << endl
             << "Valid  VVModels are : " << endl
-            << fvMeshConstructorTablePtr_->toc()
+            << meshConstructorTablePtr_->toc()
             << exit(FatalError);
     }
 

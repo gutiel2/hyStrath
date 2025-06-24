@@ -63,10 +63,10 @@ Foam::relaxationTimeModeleV::New
             << partialeVModelName << "\n" << endl;
     }
 
-    fvMeshConstructorTable::iterator cstrIter =
-        fvMeshConstructorTablePtr_->find(eVModelName);
+    meshConstructorTable::iterator cstrIter =
+        meshConstructorTablePtr_->find(eVModelName);
 
-    if (cstrIter == fvMeshConstructorTablePtr_->end())
+    if (cstrIter == meshConstructorTablePtr_->end())
     {
         FatalErrorIn
         (
@@ -75,7 +75,7 @@ Foam::relaxationTimeModeleV::New
         )   << "Unknown eVModel type "
             << eVModelName << endl << endl
             << "Valid  eVModels are : " << endl
-            << fvMeshConstructorTablePtr_->toc()
+            << meshConstructorTablePtr_->toc()
             << exit(FatalError);
     }
 

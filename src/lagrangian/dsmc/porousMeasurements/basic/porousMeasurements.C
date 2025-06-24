@@ -79,10 +79,10 @@ Foam::porousMeasurements::New
     Info<< "Selecting the porous measurement model:" << tab
         << porousMeasurementModel << "\n" << endl;
 
-    fvMeshConstructorTable::iterator cstrIter =
-        fvMeshConstructorTablePtr_->find(porousMeasurementModel);
+    meshConstructorTable::iterator cstrIter =
+        meshConstructorTablePtr_->find(porousMeasurementModel);
 
-    if (cstrIter == fvMeshConstructorTablePtr_->end())
+    if (cstrIter == meshConstructorTablePtr_->end())
     {
         FatalErrorIn
         (
@@ -91,7 +91,7 @@ Foam::porousMeasurements::New
         )   << "Unknown porous measurements type "
             << porousMeasurementModel << endl << endl
             << "Valid porous measurements types are : " << endl
-            << fvMeshConstructorTablePtr_->toc()
+            << meshConstructorTablePtr_->toc()
             << exit(FatalError);
     }
 

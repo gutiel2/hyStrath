@@ -63,10 +63,10 @@ Foam::relaxationTimeModelHE::New
             << partialHEModelName << "\n" << endl;
     }
 
-    fvMeshConstructorTable::iterator cstrIter =
-        fvMeshConstructorTablePtr_->find(HEModelName);
+    meshConstructorTable::iterator cstrIter =
+        meshConstructorTablePtr_->find(HEModelName);
 
-    if (cstrIter == fvMeshConstructorTablePtr_->end())
+    if (cstrIter == meshConstructorTablePtr_->end())
     {
         FatalErrorIn
         (
@@ -75,7 +75,7 @@ Foam::relaxationTimeModelHE::New
         )   << "Unknown HEModel type "
             << HEModelName << endl << endl
             << "Valid  HEModels are : " << endl
-            << fvMeshConstructorTablePtr_->toc()
+            << meshConstructorTablePtr_->toc()
             << exit(FatalError);
     }
 

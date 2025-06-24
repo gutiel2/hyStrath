@@ -111,10 +111,10 @@ Foam::autoPtr<ChemistryModel> Foam::basic2ChemistryModel::New
           + word(chemistryTypeDict.lookup("chemistryThermo")) + ','
           + thermoTypeName + ">";
 
-        typename ChemistryModel::fvMeshConstructorTable::iterator cstrIter =
-            ChemistryModel::fvMeshConstructorTablePtr_->find(chemistryTypeName);
+        typename ChemistryModel::meshConstructorTable::iterator cstrIter =
+            ChemistryModel::meshConstructorTablePtr_->find(chemistryTypeName);
 
-        if (cstrIter == ChemistryModel::fvMeshConstructorTablePtr_->end())
+        if (cstrIter == ChemistryModel::meshConstructorTablePtr_->end())
         {
             FatalErrorIn(ChemistryModel::typeName + "::New(const mesh&)")
                 << "Unknown " << ChemistryModel::typeName << " type " << nl
@@ -125,7 +125,7 @@ Foam::autoPtr<ChemistryModel> Foam::basic2ChemistryModel::New
             // Get the list of all the suitable chemistry packages available
             wordList validChemistryTypeNames
             (
-                ChemistryModel::fvMeshConstructorTablePtr_->sortedToc()
+                ChemistryModel::meshConstructorTablePtr_->sortedToc()
             );
 
             // Build a table of the thermo packages constituent parts
@@ -167,16 +167,16 @@ Foam::autoPtr<ChemistryModel> Foam::basic2ChemistryModel::New
 
         Info<< "Selecting chemistry type " << chemistryTypeName << endl;
 
-        typename ChemistryModel::fvMeshConstructorTable::iterator cstrIter =
-            ChemistryModel::fvMeshConstructorTablePtr_->find(chemistryTypeName);
+        typename ChemistryModel::meshConstructorTable::iterator cstrIter =
+            ChemistryModel::meshConstructorTablePtr_->find(chemistryTypeName);
 
-        if (cstrIter == ChemistryModel::fvMeshConstructorTablePtr_->end())
+        if (cstrIter == ChemistryModel::meshConstructorTablePtr_->end())
         {
             FatalErrorIn(ChemistryModel::typeName + "::New(const mesh&)")
                 << "Unknown " << ChemistryModel::typeName << " type "
                 << chemistryTypeName << nl << nl
                 << "Valid ChemistryModel types are:" << nl
-                << ChemistryModel::fvMeshConstructorTablePtr_->sortedToc() << nl
+                << ChemistryModel::meshConstructorTablePtr_->sortedToc() << nl
                 << exit(FatalError);
         }
 

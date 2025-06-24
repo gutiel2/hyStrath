@@ -109,10 +109,10 @@ Foam::dsmcTimeStepModel::New
     Info<< "Selecting the time-step model:" << tab << timeStepModel
         << "\n" << endl;
 
-    fvMeshConstructorTable::iterator cstrIter =
-        fvMeshConstructorTablePtr_->find(timeStepModel);
+    meshConstructorTable::iterator cstrIter =
+        meshConstructorTablePtr_->find(timeStepModel);
 
-    if (cstrIter == fvMeshConstructorTablePtr_->end())
+    if (cstrIter == meshConstructorTablePtr_->end())
     {
         FatalErrorIn
         (
@@ -120,7 +120,7 @@ Foam::dsmcTimeStepModel::New
         )   << "Unknown time-step model type "
             << timeStepModel << endl << endl
             << "Valid time-step model types are : " << endl
-            << fvMeshConstructorTablePtr_->toc()
+            << meshConstructorTablePtr_->toc()
             << exit(FatalError);
     }
 

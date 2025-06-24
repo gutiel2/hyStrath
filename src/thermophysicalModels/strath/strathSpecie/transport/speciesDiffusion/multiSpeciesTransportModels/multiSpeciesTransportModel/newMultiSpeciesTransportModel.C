@@ -47,10 +47,10 @@ Foam::multiSpeciesTransportModel::New
     Info<< "Loading the multispecies transport model:" << tab
         << partialModelName << "\n" << endl;
 
-    fvMeshConstructorTable::iterator cstrIter =
-        fvMeshConstructorTablePtr_->find(modelName);
+    meshConstructorTable::iterator cstrIter =
+        meshConstructorTablePtr_->find(modelName);
 
-    if (cstrIter == fvMeshConstructorTablePtr_->end())
+    if (cstrIter == meshConstructorTablePtr_->end())
     {
         FatalErrorIn
         (
@@ -59,7 +59,7 @@ Foam::multiSpeciesTransportModel::New
         )   << "Unknown diffusionModel type "
             << modelName << endl << endl
             << "Valid diffusionModels are : " << endl
-            << fvMeshConstructorTablePtr_->toc()
+            << meshConstructorTablePtr_->toc()
             << exit(FatalError);
     }
     

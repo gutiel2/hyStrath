@@ -53,10 +53,10 @@ Foam::mixingRule::New
     Info<< "\nLoading the transport mixing rule:" << tab 
         << partialMixingRuleName << "\n" << endl;
 
-    fvMeshConstructorTable::iterator cstrIter =
-        fvMeshConstructorTablePtr_->find(mixingRuleName);
+    meshConstructorTable::iterator cstrIter =
+        meshConstructorTablePtr_->find(mixingRuleName);
 
-    if (cstrIter == fvMeshConstructorTablePtr_->end())
+    if (cstrIter == meshConstructorTablePtr_->end())
     {
         FatalErrorIn
         (
@@ -65,7 +65,7 @@ Foam::mixingRule::New
         )   << "Unknown mixingRuleModel type "
             << mixingRuleName << endl << endl
             << "Valid  mixingRuleModels are : " << endl
-            << fvMeshConstructorTablePtr_->toc()
+            << meshConstructorTablePtr_->toc()
             << exit(FatalError);
     }
 

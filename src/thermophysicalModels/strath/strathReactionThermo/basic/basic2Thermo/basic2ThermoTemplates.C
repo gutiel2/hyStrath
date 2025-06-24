@@ -153,11 +153,11 @@ Foam::autoPtr<Thermo> Foam::basic2Thermo::New
         )
     );
 
-    typename Thermo::fvMeshConstructorTable::iterator cstrIter =
-        lookupThermo<Thermo, typename Thermo::fvMeshConstructorTable>
+    typename Thermo::meshConstructorTable::iterator cstrIter =
+        lookupThermo<Thermo, typename Thermo::meshConstructorTable>
         (
             thermoDict,
-            Thermo::fvMeshConstructorTablePtr_
+            Thermo::meshConstructorTablePtr_
         );
 
     return autoPtr<Thermo>(cstrIter()(mesh, phaseName));

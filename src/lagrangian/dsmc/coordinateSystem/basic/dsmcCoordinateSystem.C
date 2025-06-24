@@ -85,10 +85,10 @@ Foam::dsmcCoordinateSystem::New
     Info<< "Selecting the coordinate system model:" << tab << coordSystem
         << "\n" << endl;
 
-    fvMeshConstructorTable::iterator cstrIter =
-        fvMeshConstructorTablePtr_->find(coordSystem);
+    meshConstructorTable::iterator cstrIter =
+        meshConstructorTablePtr_->find(coordSystem);
 
-    if (cstrIter == fvMeshConstructorTablePtr_->end())
+    if (cstrIter == meshConstructorTablePtr_->end())
     {
         FatalErrorIn
         (
@@ -97,7 +97,7 @@ Foam::dsmcCoordinateSystem::New
         )   << "Unknown coordinate system type "
             << coordSystem << endl << endl
             << "Valid coordinate system types are : " << endl
-            << fvMeshConstructorTablePtr_->toc()
+            << meshConstructorTablePtr_->toc()
             << exit(FatalError);
     }
 
