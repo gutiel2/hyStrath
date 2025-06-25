@@ -31,6 +31,7 @@ inline const Foam::fvMesh& Foam::basic2ChemistryModel::mesh() const
 }
 
 
+
 inline Foam::Switch Foam::basic2ChemistryModel::chemistry() const
 {
     return chemistry_;

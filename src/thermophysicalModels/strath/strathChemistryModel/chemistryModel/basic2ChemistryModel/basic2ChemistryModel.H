@@ -245,6 +245,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #include "basic2ChemistryModelI.H"
+#include "runTimeSelectionTables.H"
 
 #ifdef NoRepository
 #   include "basic2ChemistryModelTemplates.C"

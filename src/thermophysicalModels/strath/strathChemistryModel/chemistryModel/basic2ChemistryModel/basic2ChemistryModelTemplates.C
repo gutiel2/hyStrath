@@ -27,7 +27,6 @@ License
 #include "basic2Thermo.H"
 
 // * * * * * * * * * * * * * * * * Selectors * * * * * * * * * * * * * * * * //
-
 template<class ChemistryModel>
 Foam::autoPtr<ChemistryModel> Foam::basic2ChemistryModel::New
 (
@@ -97,12 +96,12 @@ Foam::autoPtr<ChemistryModel> Foam::basic2ChemistryModel::New
         }
         else
         {
-             FatalIOErrorIn
-             (
-                 (ChemistryModel::typeName + "::New(const mesh&)").c_str(),
-                 thermoDict
-             )   << "thermoType is in the old format and must be upgraded"
-                 << exit(FatalIOError);
+            FatalIOErrorIn
+            (
+                (ChemistryModel::typeName + "::New(const mesh&)").c_str(),
+                thermoDict
+            )   << "thermoType is in the old format and must be upgraded"
+                << exit(FatalIOError);
         }
 
         // Construct the name of the chemistry type from the components
@@ -111,77 +110,55 @@ Foam::autoPtr<ChemistryModel> Foam::basic2ChemistryModel::New
           + word(chemistryTypeDict.lookup("chemistryThermo")) + ','
           + thermoTypeName + ">";
 
-        typename ChemistryModel::fvMeshConstructorTable::iterator cstrIter =
-            ChemistryModel::fvMeshConstructorTablePtr_->find(chemistryTypeName);
+        /* Old Pointer 
+           typename ChemistryModel::fvMeshConstructorTable::iterator cstrIter =
+               ChemistryModel::fvMeshConstructorTablePtr_->find(chemistryTypeName);
+           …
+        */
 
-        if (cstrIter == ChemistryModel::fvMeshConstructorTablePtr_->end())
+        // Mateo (updated for 2406)
+        // 1) Grab the entire selection table by dereferencing the ptr:
+        const auto& meshTable = *ChemistryModel::fvMeshConstructorTablePtr_;
+
+        // 2) Look up our requested key:
+        auto cstrIter = meshTable.find(chemistryTypeName);
+
+        if (cstrIter == meshTable.end())
         {
             FatalErrorIn(ChemistryModel::typeName + "::New(const mesh&)")
-                << "Unknown " << ChemistryModel::typeName << " type " << nl
-                << "chemistryType" << chemistryTypeDict << nl << nl
-                << "Valid " << ChemistryModel ::typeName << " types are:"
-                << nl << nl;
-
-            // Get the list of all the suitable chemistry packages available
-            wordList validChemistryTypeNames
-            (
-                ChemistryModel::fvMeshConstructorTablePtr_->sortedToc()
-            );
-
-            // Build a table of the thermo packages constituent parts
-            // Note: row-0 contains the names of constituent parts
-            List<wordList> validChemistryTypeNameCmpts
-            (
-                validChemistryTypeNames.size() + 1
-            );
-
-            validChemistryTypeNameCmpts[0].setSize(nCmpt);
-            forAll(validChemistryTypeNameCmpts[0], j)
-            {
-                validChemistryTypeNameCmpts[0][j] = cmptNames[j];
-            }
-
-            // Split the thermo package names into their constituent parts
-            forAll(validChemistryTypeNames, i)
-            {
-                validChemistryTypeNameCmpts[i+1] = basic2Thermo::splitThermoName
-                (
-                    validChemistryTypeNames[i],
-                    nCmpt
-                );
-            }
-
-            // Print the table of available packages
-            // in terms of their constituent parts
-            printTable(validChemistryTypeNameCmpts, FatalError);
-
-            FatalError<< exit(FatalError);
-        }
-
-        return autoPtr<ChemistryModel>(cstrIter()(mesh));
-    }
-    else
-    {
-        chemistryTypeName =
-            word(chemistryDict.lookup("chemistryType"));
-
-        Info<< "Selecting chemistry type " << chemistryTypeName << endl;
-
-        typename ChemistryModel::fvMeshConstructorTable::iterator cstrIter =
-            ChemistryModel::fvMeshConstructorTablePtr_->find(chemistryTypeName);
-
-        if (cstrIter == ChemistryModel::fvMeshConstructorTablePtr_->end())
-        {
-            FatalErrorIn(ChemistryModel::typeName + "::New(const mesh&)")
-                << "Unknown " << ChemistryModel::typeName << " type "
-                << chemistryTypeName << nl << nl
-                << "Valid ChemistryModel types are:" << nl
-                << ChemistryModel::fvMeshConstructorTablePtr_->sortedToc() << nl
+                << "Unknown " << ChemistryModel::typeName
+                << " type " << chemistryTypeName << nl << nl
+                << "Valid " << ChemistryModel::typeName
+                << " types are:" << nl
+                << meshTable.sortedToc() << nl
                 << exit(FatalError);
         }
 
-        return autoPtr<ChemistryModel>(cstrIter()(mesh));
+        // 3) Invoke the constructor function we found:
+        return Foam::autoPtr<ChemistryModel>( (cstrIter())(mesh) );
+    }
+    else
+    {
+        // old‐format branch
+        chemistryTypeName = word(chemistryDict.lookup("chemistryType"));
+
+        Info<< "Selecting chemistry type " << chemistryTypeName << endl;
+
+        const auto& meshTable = *ChemistryModel::fvMeshConstructorTablePtr_;
+        auto cstrIter = meshTable.find(chemistryTypeName);
+
+        if (cstrIter == meshTable.end())
+        {
+            FatalErrorIn(ChemistryModel::typeName + "::New(const mesh&)")
+                << "Unknown " << ChemistryModel::typeName
+                << " type " << chemistryTypeName << nl << nl
+                << "Valid " << ChemistryModel::typeName
+                << " types are:" << nl
+                << meshTable.sortedToc() << nl
+                << exit(FatalError);
+        }
+
+        return Foam::autoPtr<ChemistryModel>( (cstrIter())(mesh) );
     }
 }
-
 // ************************************************************************* //

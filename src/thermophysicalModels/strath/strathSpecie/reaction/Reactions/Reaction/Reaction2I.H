@@ -33,7 +33,7 @@ namespace Foam
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 template<class Reaction2Thermo>
-inline word& Reaction2<Reaction2Thermo>::name()
+inline word& Reaction2<Reaction2Thermo>::name() const
 {
     return name_;
 }

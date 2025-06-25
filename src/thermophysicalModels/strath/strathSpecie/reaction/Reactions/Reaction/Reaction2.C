@@ -214,8 +214,9 @@ Foam::Reaction2<Reaction2Thermo>::specieCoeffs::specieCoeffs
         word specieName = t.wordToken();
 
         size_t i = specieName.find('^');
-
+        /*  Old code (pre-2406) - OzgurT
         if (i != word::npos)
+        
         {
             string exponentStr = specieName
             (
@@ -225,6 +226,14 @@ Foam::Reaction2<Reaction2Thermo>::specieCoeffs::specieCoeffs
             exponent = atof(exponentStr.c_str());
             specieName = specieName(0, i);
         }
+        */
+       // New code (2406) - OzgurT
+       if (i != word::npos)
+       {
+        string exponentStr = specieName.subtr(i + 1, specieName.size() - i - 1);
+            exponent = atof(exponentStr.c_str());
+            specieName = specieName.subtr(0, i);
+       }
 
         if (species.contains(specieName))
         {

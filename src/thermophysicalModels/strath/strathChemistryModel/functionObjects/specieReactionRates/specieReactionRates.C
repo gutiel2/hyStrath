@@ -122,8 +122,12 @@ bool Foam::functionObjects::specieReactionRates<ChemistryModelType>::write()
 
     for (label ri=0; ri<nReaction; ri++)
     {
+        /* Old Code - MateoG  
         writeTime(file());
-        file() << token::TAB << ri;
+        */
+       // New Code (2406) - MateoG
+        file() << mesh_.time().timeName()
+               << token::END_STATEMENT << nl; 
 
         for (label si=0; si<nSpecie; si++)
         {
